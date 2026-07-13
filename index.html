@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Hero-блок ATS системы для быстрой проверки Magic MCP и GitHub Pages."
+    />
+    <title>HireFlow ATS</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07111f;
+        --bg-soft: #0d1b2d;
+        --card: rgba(255, 255, 255, 0.08);
+        --card-strong: rgba(255, 255, 255, 0.14);
+        --text: #f7fbff;
+        --muted: #a7b6c8;
+        --line: rgba(255, 255, 255, 0.16);
+        --accent: #74f2c4;
+        --accent-2: #7aa8ff;
+        --warning: #ffd166;
+        --shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+        background: var(--bg);
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 15% 18%, rgba(116, 242, 196, 0.2), transparent 34rem),
+          radial-gradient(circle at 92% 12%, rgba(122, 168, 255, 0.23), transparent 30rem),
+          linear-gradient(135deg, #06101d 0%, #0a1728 52%, #11172e 100%);
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .hero {
+        position: relative;
+        display: grid;
+        min-height: 100dvh;
+        place-items: center;
+        padding: 40px 20px;
+      }
+
+      .hero::before {
+        position: absolute;
+        inset: 18px;
+        pointer-events: none;
+        content: "";
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 36px;
+      }
+
+      .hero__shell {
+        position: relative;
+        display: grid;
+        width: min(1180px, 100%);
+        grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.98fr);
+        gap: 48px;
+        align-items: center;
+      }
+
+      .hero__copy {
+        max-width: 680px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 44px;
+        padding: 8px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        margin: 0 0 24px;
+        background: rgba(255, 255, 255, 0.07);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        color: #d7fff1;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .eyebrow__pulse {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 8px rgba(116, 242, 196, 0.12);
+      }
+
+      h1 {
+        max-width: 780px;
+        margin: 0;
+        color: var(--text);
+        font-size: clamp(44px, 7vw, 86px);
+        line-height: 0.94;
+        letter-spacing: -0.07em;
+      }
+
+      .hero__lead {
+        max-width: 620px;
+        margin: 26px 0 0;
+        color: var(--muted);
+        font-size: clamp(18px, 2vw, 22px);
+        line-height: 1.6;
+      }
+
+      .hero__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin: 34px 0 0;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 50px;
+        padding: 0 22px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        font-weight: 800;
+        text-decoration: none;
+        transition:
+          transform 180ms ease,
+          border-color 180ms ease,
+          background 180ms ease;
+      }
+
+      .button:focus-visible {
+        outline: 3px solid rgba(116, 242, 196, 0.55);
+        outline-offset: 4px;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .button--primary {
+        background: linear-gradient(135deg, var(--accent), #9bf7ff);
+        color: #06111f;
+        box-shadow: 0 18px 50px rgba(116, 242, 196, 0.28);
+      }
+
+      .button--secondary {
+        border-color: var(--line);
+        background: rgba(255, 255, 255, 0.07);
+        color: var(--text);
+      }
+
+      .hero__proof {
+        display: grid;
+        max-width: 640px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 42px 0 0;
+      }
+
+      .proof-card {
+        min-height: 96px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .proof-card strong {
+        display: block;
+        font-size: 28px;
+        letter-spacing: -0.04em;
+      }
+
+      .proof-card span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .product-card {
+        position: relative;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 34px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06)),
+          rgba(10, 22, 38, 0.9);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .product-card::before {
+        position: absolute;
+        inset: -1px;
+        z-index: -1;
+        content: "";
+        border-radius: inherit;
+        background: linear-gradient(135deg, rgba(116, 242, 196, 0.5), rgba(122, 168, 255, 0.42), transparent 65%);
+        opacity: 0.7;
+      }
+
+      .dashboard {
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 26px;
+        background: #081321;
+      }
+
+      .dashboard__topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .window-dots {
+        display: flex;
+        gap: 7px;
+      }
+
+      .window-dots span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.35);
+      }
+
+      .dashboard__tag {
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: rgba(116, 242, 196, 0.12);
+        color: #a9ffe1;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .dashboard__body {
+        display: grid;
+        gap: 16px;
+        padding: 18px;
+      }
+
+      .metric-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .metric {
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--card);
+      }
+
+      .metric span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 24px;
+        letter-spacing: -0.04em;
+      }
+
+      .pipeline {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .stage {
+        min-height: 162px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.055);
+      }
+
+      .stage__title {
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .candidate {
+        padding: 10px;
+        border-radius: 14px;
+        margin-top: 8px;
+        background: var(--card-strong);
+      }
+
+      .candidate strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .candidate span {
+        display: block;
+        margin-top: 5px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .integrations {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        padding: 9px 11px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        color: #dbe8f6;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .floating-note {
+        position: absolute;
+        right: -18px;
+        bottom: 38px;
+        max-width: 230px;
+        padding: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 22px;
+        background: rgba(6, 17, 31, 0.86);
+        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.28);
+      }
+
+      .floating-note strong {
+        display: block;
+        color: var(--warning);
+        font-size: 13px;
+      }
+
+      .floating-note span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.001ms !important;
+        }
+      }
+
+      @media (max-width: 960px) {
+        .hero {
+          padding: 28px 16px;
+        }
+
+        .hero::before {
+          inset: 10px;
+          border-radius: 26px;
+        }
+
+        .hero__shell {
+          grid-template-columns: 1fr;
+          gap: 34px;
+        }
+
+        .hero__copy {
+          max-width: none;
+        }
+
+        .product-card {
+          max-width: 680px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .hero__proof,
+        .metric-row {
+          grid-template-columns: 1fr;
+        }
+
+        .pipeline {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .floating-note {
+          position: static;
+          max-width: none;
+          margin-top: 14px;
+        }
+
+        .button {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 440px) {
+        h1 {
+          font-size: 42px;
+        }
+
+        .pipeline {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="hero" aria-labelledby="hero-title">
+      <section class="hero__shell">
+        <div class="hero__copy">
+          <p class="eyebrow"><span class="eyebrow__pulse" aria-hidden="true"></span>ATS для команд, которые нанимают быстро</p>
+          <h1 id="hero-title">Закрывайте вакансии без хаоса в таблицах</h1>
+          <p class="hero__lead">
+            HireFlow собирает отклики, коммуникации, этапы подбора и аналитику в одной ATS. Рекрутеры видят приоритеты, руководители видят скорость найма, кандидаты получают ответ вовремя.
+          </p>
+          <div class="hero__actions" aria-label="Основные действия">
+            <a class="button button--primary" href="mailto:demo@example.com">Получить демо</a>
+            <a class="button button--secondary" href="#pipeline">Посмотреть воронку</a>
+          </div>
+          <div class="hero__proof" aria-label="Ключевые показатели">
+            <div class="proof-card">
+              <strong>37%</strong>
+              <span>быстрее short-list по активным вакансиям</span>
+            </div>
+            <div class="proof-card">
+              <strong>1 база</strong>
+              <span>кандидаты, резюме, история и фидбек</span>
+            </div>
+            <div class="proof-card">
+              <strong>24/7</strong>
+              <span>автонапоминания, письма и SLA-контроль</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="product-card" aria-label="Превью ATS панели">
+          <div class="dashboard">
+            <div class="dashboard__topbar">
+              <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+              <span class="dashboard__tag">Live hiring board</span>
+            </div>
+            <div class="dashboard__body" id="pipeline">
+              <div class="metric-row">
+                <div class="metric"><span>Открыто вакансий</span><strong>42</strong></div>
+                <div class="metric"><span>Time-to-hire</span><strong>18 дн.</strong></div>
+                <div class="metric"><span>Конверсия</span><strong>21%</strong></div>
+              </div>
+
+              <div class="pipeline" aria-label="Воронка кандидатов">
+                <div class="stage">
+                  <p class="stage__title">Новые</p>
+                  <div class="candidate"><strong>Анна К.</strong><span>Product designer</span></div>
+                  <div class="candidate"><strong>Илья М.</strong><span>Backend engineer</span></div>
+                </div>
+                <div class="stage">
+                  <p class="stage__title">Скрининг</p>
+                  <div class="candidate"><strong>Мария С.</strong><span>HRBP</span></div>
+                </div>
+                <div class="stage">
+                  <p class="stage__title">Интервью</p>
+                  <div class="candidate"><strong>Олег Р.</strong><span>Sales lead</span></div>
+                  <div class="candidate"><strong>Дина П.</strong><span>Analyst</span></div>
+                </div>
+                <div class="stage">
+                  <p class="stage__title">Оффер</p>
+                  <div class="candidate"><strong>Никита В.</strong><span>DevOps</span></div>
+                </div>
+              </div>
+
+              <div class="integrations" aria-label="Интеграции">
+                <span class="chip">hh.ru</span>
+                <span class="chip">Telegram</span>
+                <span class="chip">Email</span>
+                <span class="chip">Календарь</span>
+                <span class="chip">BI-отчеты</span>
+              </div>
+            </div>
+          </div>
+          <div class="floating-note">
+            <strong>Следующее действие найдено</strong>
+            <span>ATS сама подсветила кандидатов без фидбека и интервью, которые пора назначить сегодня.</span>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </body>
+</html>
