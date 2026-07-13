@@ -5,23 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Hero-блок ATS системы для быстрой проверки Magic MCP и GitHub Pages."
+      content="Hero-блок ATS системы, переработанный по референсам 21st.dev Registry."
     />
     <title>HireFlow ATS</title>
     <style>
       :root {
         color-scheme: dark;
-        --bg: #07111f;
-        --bg-soft: #0d1b2d;
-        --card: rgba(255, 255, 255, 0.08);
-        --card-strong: rgba(255, 255, 255, 0.14);
-        --text: #f7fbff;
-        --muted: #a7b6c8;
-        --line: rgba(255, 255, 255, 0.16);
-        --accent: #74f2c4;
-        --accent-2: #7aa8ff;
-        --warning: #ffd166;
-        --shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+        --bg: #050816;
+        --bg-2: #080f20;
+        --ink: #f8fbff;
+        --muted: #9caec5;
+        --soft: rgba(255, 255, 255, 0.07);
+        --soft-2: rgba(255, 255, 255, 0.12);
+        --line: rgba(255, 255, 255, 0.14);
+        --cyan: #72f7d0;
+        --blue: #82a9ff;
+        --violet: #be8cff;
+        --amber: #ffd166;
+        --danger: #ff6b8b;
+        --shadow: 0 28px 100px rgba(0, 0, 0, 0.48);
       }
 
       * {
@@ -36,14 +38,15 @@
       body {
         min-height: 100vh;
         margin: 0;
+        color: var(--ink);
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
-        color: var(--text);
         background:
-          radial-gradient(circle at 15% 18%, rgba(116, 242, 196, 0.2), transparent 34rem),
-          radial-gradient(circle at 92% 12%, rgba(122, 168, 255, 0.23), transparent 30rem),
-          linear-gradient(135deg, #06101d 0%, #0a1728 52%, #11172e 100%);
+          radial-gradient(circle at 50% -20%, rgba(130, 169, 255, 0.24), transparent 34rem),
+          radial-gradient(circle at 10% 24%, rgba(114, 247, 208, 0.16), transparent 28rem),
+          radial-gradient(circle at 95% 70%, rgba(190, 140, 255, 0.18), transparent 30rem),
+          linear-gradient(180deg, #050816 0%, #070d1b 54%, #09111f 100%);
         overflow-x: hidden;
       }
 
@@ -56,74 +59,153 @@
         display: grid;
         min-height: 100dvh;
         place-items: center;
-        padding: 40px 20px;
+        padding: 36px 18px;
+        isolation: isolate;
+      }
+
+      .hero::before,
+      .hero::after {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
+        content: "";
       }
 
       .hero::before {
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+        background-size: 64px 64px;
+        mask-image: radial-gradient(circle at 50% 42%, black 0%, transparent 68%);
+      }
+
+      .hero::after {
+        background:
+          linear-gradient(90deg, transparent, rgba(114, 247, 208, 0.18), transparent),
+          linear-gradient(180deg, transparent, rgba(130, 169, 255, 0.12), transparent);
+        mask-image:
+          linear-gradient(90deg, transparent 0%, black 18%, black 82%, transparent 100%),
+          linear-gradient(180deg, transparent 0%, black 16%, black 80%, transparent 100%);
+      }
+
+      .paths {
         position: absolute;
-        inset: 18px;
+        inset: 0;
+        z-index: -1;
         pointer-events: none;
-        content: "";
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 36px;
+        overflow: hidden;
+        opacity: 0.78;
       }
 
-      .hero__shell {
+      .paths svg {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: min(1280px, 140vw);
+        transform: translate(-50%, -50%);
+      }
+
+      .paths path {
+        fill: none;
+        stroke: url(#line-gradient);
+        stroke-width: 1.1;
+        stroke-dasharray: 920;
+        stroke-dashoffset: 920;
+        animation: drawPath 7s ease-in-out infinite alternate;
+      }
+
+      .paths path:nth-child(2) {
+        animation-delay: 0.5s;
+      }
+
+      .paths path:nth-child(3) {
+        animation-delay: 1s;
+      }
+
+      .shell {
         position: relative;
-        display: grid;
         width: min(1180px, 100%);
-        grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.98fr);
-        gap: 48px;
-        align-items: center;
+        padding: clamp(18px, 3vw, 28px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 36px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035)),
+          rgba(5, 8, 22, 0.72);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
       }
 
-      .hero__copy {
-        max-width: 680px;
+      .shell::before {
+        position: absolute;
+        inset: -1px;
+        z-index: -1;
+        content: "";
+        border-radius: inherit;
+        background: conic-gradient(from var(--angle), transparent, rgba(114, 247, 208, 0.62), rgba(130, 169, 255, 0.44), transparent 34%);
+        opacity: 0.68;
+        animation: spinBorder 9s linear infinite;
       }
 
-      .eyebrow {
+      .registry-note {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        min-height: 44px;
-        padding: 8px 14px;
-        border: 1px solid var(--line);
+        min-height: 38px;
+        gap: 9px;
+        padding: 7px 12px;
+        border: 1px solid rgba(114, 247, 208, 0.24);
         border-radius: 999px;
-        margin: 0 0 24px;
-        background: rgba(255, 255, 255, 0.07);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-        color: #d7fff1;
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: 0.02em;
+        margin: 0 0 26px;
+        background: rgba(114, 247, 208, 0.08);
+        color: #cefff0;
+        font-size: 13px;
+        font-weight: 800;
       }
 
-      .eyebrow__pulse {
-        width: 10px;
-        height: 10px;
+      .registry-note span {
+        width: 8px;
+        height: 8px;
         border-radius: 50%;
-        background: var(--accent);
-        box-shadow: 0 0 0 8px rgba(116, 242, 196, 0.12);
+        background: var(--cyan);
+        box-shadow: 0 0 0 7px rgba(114, 247, 208, 0.12);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(420px, 1.05fr);
+        gap: clamp(28px, 5vw, 58px);
+        align-items: center;
+      }
+
+      .copy {
+        max-width: 650px;
       }
 
       h1 {
         max-width: 780px;
         margin: 0;
-        color: var(--text);
-        font-size: clamp(44px, 7vw, 86px);
-        line-height: 0.94;
-        letter-spacing: -0.07em;
+        font-size: clamp(48px, 7.6vw, 92px);
+        line-height: 0.91;
+        letter-spacing: -0.08em;
       }
 
-      .hero__lead {
+      .gradient-text {
+        display: inline-block;
+        background: linear-gradient(100deg, #ffffff 0%, #c8fff0 36%, #8fb2ff 70%, #f1ddff 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .lead {
         max-width: 620px;
         margin: 26px 0 0;
         color: var(--muted);
         font-size: clamp(18px, 2vw, 22px);
-        line-height: 1.6;
+        line-height: 1.58;
       }
 
-      .hero__actions {
+      .actions {
         display: flex;
         flex-wrap: wrap;
         gap: 14px;
@@ -134,20 +216,21 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 50px;
+        min-height: 52px;
         padding: 0 22px;
         border: 1px solid transparent;
         border-radius: 999px;
-        font-weight: 800;
+        font-weight: 900;
         text-decoration: none;
         transition:
           transform 180ms ease,
           border-color 180ms ease,
-          background 180ms ease;
+          background 180ms ease,
+          box-shadow 180ms ease;
       }
 
       .button:focus-visible {
-        outline: 3px solid rgba(116, 242, 196, 0.55);
+        outline: 3px solid rgba(114, 247, 208, 0.58);
         outline-offset: 4px;
       }
 
@@ -156,77 +239,103 @@
       }
 
       .button--primary {
-        background: linear-gradient(135deg, var(--accent), #9bf7ff);
-        color: #06111f;
-        box-shadow: 0 18px 50px rgba(116, 242, 196, 0.28);
+        background: linear-gradient(135deg, var(--cyan), #9be8ff);
+        color: #05101d;
+        box-shadow: 0 18px 54px rgba(114, 247, 208, 0.28);
       }
 
-      .button--secondary {
+      .button--ghost {
         border-color: var(--line);
-        background: rgba(255, 255, 255, 0.07);
-        color: var(--text);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--ink);
       }
 
-      .hero__proof {
+      .proof {
         display: grid;
-        max-width: 640px;
         grid-template-columns: repeat(3, 1fr);
         gap: 12px;
-        margin: 42px 0 0;
+        margin: 38px 0 0;
       }
 
       .proof-card {
-        min-height: 96px;
-        padding: 18px;
+        padding: 16px;
         border: 1px solid var(--line);
-        border-radius: 24px;
-        background: rgba(255, 255, 255, 0.06);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.055);
       }
 
       .proof-card strong {
         display: block;
-        font-size: 28px;
-        letter-spacing: -0.04em;
+        font-size: 26px;
+        letter-spacing: -0.05em;
       }
 
       .proof-card span {
         display: block;
-        margin-top: 6px;
+        margin-top: 5px;
         color: var(--muted);
-        font-size: 13px;
+        font-size: 12.5px;
         line-height: 1.35;
       }
 
-      .product-card {
+      .preview {
         position: relative;
-        padding: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 34px;
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06)),
-          rgba(10, 22, 38, 0.9);
-        box-shadow: var(--shadow);
-        backdrop-filter: blur(18px);
+        min-width: 0;
       }
 
-      .product-card::before {
-        position: absolute;
-        inset: -1px;
-        z-index: -1;
-        content: "";
-        border-radius: inherit;
-        background: linear-gradient(135deg, rgba(116, 242, 196, 0.5), rgba(122, 168, 255, 0.42), transparent 65%);
-        opacity: 0.7;
+      .tabs {
+        display: flex;
+        gap: 8px;
+        width: fit-content;
+        padding: 7px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        margin: 0 auto 14px;
+        background: rgba(255, 255, 255, 0.06);
       }
 
-      .dashboard {
+      .tab {
+        min-height: 34px;
+        padding: 0 13px;
+        border-radius: 12px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        line-height: 34px;
+      }
+
+      .tab--active {
+        background: rgba(114, 247, 208, 0.14);
+        color: #d9fff3;
+        box-shadow: inset 0 0 0 1px rgba(114, 247, 208, 0.22);
+      }
+
+      .product-frame {
+        position: relative;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        border-radius: 26px;
-        background: #081321;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 30px;
+        background:
+          radial-gradient(circle at 12% 0%, rgba(114, 247, 208, 0.12), transparent 24rem),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.045)),
+          #07101e;
+        box-shadow: 0 26px 90px rgba(0, 0, 0, 0.44);
       }
 
-      .dashboard__topbar {
+      .product-frame::before {
+        position: absolute;
+        inset: 0;
+        content: "";
+        background:
+          linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent),
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 100% 100%, 100% 56px;
+        mask-image: linear-gradient(180deg, black 0%, transparent 86%);
+        pointer-events: none;
+      }
+
+      .topbar {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -234,36 +343,50 @@
         border-bottom: 1px solid var(--line);
       }
 
-      .window-dots {
+      .dots {
         display: flex;
         gap: 7px;
       }
 
-      .window-dots span {
+      .dots span {
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.36);
       }
 
-      .dashboard__tag {
-        padding: 7px 11px;
+      .live {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 32px;
+        padding: 0 11px;
+        border: 1px solid rgba(114, 247, 208, 0.18);
         border-radius: 999px;
-        background: rgba(116, 242, 196, 0.12);
-        color: #a9ffe1;
+        background: rgba(114, 247, 208, 0.08);
+        color: #d6fff2;
         font-size: 12px;
-        font-weight: 800;
+        font-weight: 900;
       }
 
-      .dashboard__body {
+      .live::before {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        content: "";
+        background: var(--cyan);
+      }
+
+      .board {
+        position: relative;
         display: grid;
         gap: 16px;
         padding: 18px;
       }
 
-      .metric-row {
+      .metric-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 12px;
       }
 
@@ -271,49 +394,68 @@
         padding: 14px;
         border: 1px solid var(--line);
         border-radius: 18px;
-        background: var(--card);
+        background: rgba(255, 255, 255, 0.07);
       }
 
       .metric span {
+        display: block;
         color: var(--muted);
-        font-size: 12px;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
       }
 
       .metric strong {
         display: block;
         margin-top: 8px;
-        font-size: 24px;
-        letter-spacing: -0.04em;
+        font-size: 25px;
+        letter-spacing: -0.05em;
       }
 
-      .pipeline {
+      .metric small {
+        color: var(--cyan);
+        font-weight: 900;
+      }
+
+      .kanban {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 10px;
       }
 
       .stage {
-        min-height: 162px;
+        min-height: 178px;
         padding: 10px;
         border: 1px solid var(--line);
         border-radius: 18px;
-        background: rgba(255, 255, 255, 0.055);
+        background: rgba(255, 255, 255, 0.05);
       }
 
-      .stage__title {
+      .stage-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         margin: 0 0 10px;
-        color: var(--muted);
+        color: #dce8f7;
         font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
+        font-weight: 900;
         letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .stage-title i {
+        font-style: normal;
+        color: var(--muted);
       }
 
       .candidate {
-        padding: 10px;
-        border-radius: 14px;
+        position: relative;
+        padding: 11px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 15px;
         margin-top: 8px;
-        background: var(--card-strong);
+        background: rgba(255, 255, 255, 0.085);
       }
 
       .candidate strong {
@@ -328,190 +470,282 @@
         font-size: 11px;
       }
 
+      .candidate--hot {
+        box-shadow: inset 3px 0 0 var(--cyan);
+      }
+
+      .bottom-row {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 12px;
+      }
+
+      .insight,
+      .integrations {
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.055);
+      }
+
+      .insight strong {
+        display: block;
+        color: var(--amber);
+        font-size: 13px;
+      }
+
+      .insight span {
+        display: block;
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.42;
+      }
+
       .integrations {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
+        align-content: flex-start;
       }
 
       .chip {
-        padding: 9px 11px;
+        padding: 8px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.07);
+        color: #dce8f7;
+        font-size: 12px;
+        font-weight: 850;
+      }
+
+      .source-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 14px auto 0;
+        color: var(--muted);
+        font-size: 11px;
+        justify-content: center;
+      }
+
+      .source-strip code {
+        padding: 5px 8px;
         border: 1px solid var(--line);
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.06);
-        color: #dbe8f6;
-        font-size: 12px;
-        font-weight: 700;
+        background: rgba(255, 255, 255, 0.05);
+        color: #dbe7f7;
+        font-family: inherit;
       }
 
-      .floating-note {
-        position: absolute;
-        right: -18px;
-        bottom: 38px;
-        max-width: 230px;
-        padding: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 22px;
-        background: rgba(6, 17, 31, 0.86);
-        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.28);
+      @property --angle {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
       }
 
-      .floating-note strong {
-        display: block;
-        color: var(--warning);
-        font-size: 13px;
+      @keyframes spinBorder {
+        to {
+          --angle: 360deg;
+        }
       }
 
-      .floating-note span {
-        display: block;
-        margin-top: 6px;
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.4;
+      @keyframes drawPath {
+        to {
+          stroke-dashoffset: 0;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
         *,
         *::before,
         *::after {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
           scroll-behavior: auto !important;
           transition-duration: 0.001ms !important;
         }
       }
 
-      @media (max-width: 960px) {
-        .hero {
-          padding: 28px 16px;
+      @media (max-width: 980px) {
+        .layout {
+          grid-template-columns: 1fr;
         }
 
-        .hero::before {
-          inset: 10px;
+        .copy {
+          max-width: none;
+        }
+
+        .preview {
+          max-width: 760px;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .hero {
+          padding: 18px 10px;
+        }
+
+        .shell {
           border-radius: 26px;
         }
 
-        .hero__shell {
-          grid-template-columns: 1fr;
-          gap: 34px;
+        .registry-note {
+          align-items: flex-start;
+          border-radius: 18px;
         }
 
-        .hero__copy {
-          max-width: none;
+        h1 {
+          font-size: clamp(42px, 14vw, 58px);
         }
 
-        .product-card {
-          max-width: 680px;
-        }
-      }
-
-      @media (max-width: 640px) {
-        .hero__proof,
-        .metric-row {
+        .proof,
+        .metric-grid,
+        .bottom-row {
           grid-template-columns: 1fr;
         }
 
-        .pipeline {
-          grid-template-columns: 1fr 1fr;
-        }
-
-        .floating-note {
-          position: static;
-          max-width: none;
-          margin-top: 14px;
-        }
-
-        .button {
+        .actions .button {
           width: 100%;
         }
-      }
 
-      @media (max-width: 440px) {
-        h1 {
-          font-size: 42px;
+        .tabs {
+          width: 100%;
+          overflow-x: auto;
+          justify-content: flex-start;
         }
 
-        .pipeline {
+        .kanban {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .kanban {
           grid-template-columns: 1fr;
+        }
+
+        .board,
+        .product-frame .topbar {
+          padding: 13px;
         }
       }
     </style>
   </head>
   <body>
-    <main class="hero" aria-labelledby="hero-title">
-      <section class="hero__shell">
-        <div class="hero__copy">
-          <p class="eyebrow"><span class="eyebrow__pulse" aria-hidden="true"></span>ATS для команд, которые нанимают быстро</p>
-          <h1 id="hero-title">Закрывайте вакансии без хаоса в таблицах</h1>
-          <p class="hero__lead">
-            HireFlow собирает отклики, коммуникации, этапы подбора и аналитику в одной ATS. Рекрутеры видят приоритеты, руководители видят скорость найма, кандидаты получают ответ вовремя.
-          </p>
-          <div class="hero__actions" aria-label="Основные действия">
-            <a class="button button--primary" href="mailto:demo@example.com">Получить демо</a>
-            <a class="button button--secondary" href="#pipeline">Посмотреть воронку</a>
+    <main
+      class="hero"
+      aria-labelledby="hero-title"
+      data-registry-sources="21st.dev/r/shadcnblockscom/hero-195-1.json; 21st.dev/r/kokonutd/background-paths.json; 21st.dev/r/aceternity/container-scroll-animation.json"
+    >
+      <div class="paths" aria-hidden="true">
+        <svg viewBox="0 0 1200 680" role="img">
+          <defs>
+            <linearGradient id="line-gradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#72f7d0" stop-opacity="0" />
+              <stop offset="0.38" stop-color="#72f7d0" stop-opacity="0.58" />
+              <stop offset="0.72" stop-color="#82a9ff" stop-opacity="0.45" />
+              <stop offset="1" stop-color="#be8cff" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <path d="M28 498C194 338 248 596 416 402C584 208 701 336 849 183C997 31 1111 138 1172 60" />
+          <path d="M44 202C210 78 307 302 489 178C671 54 752 175 898 106C1044 37 1128 126 1186 96" />
+          <path d="M26 604C213 483 329 650 513 518C697 386 761 515 923 402C1085 289 1111 394 1181 343" />
+        </svg>
+      </div>
+
+      <section class="shell">
+        <p class="registry-note"><span aria-hidden="true"></span>Дизайн-паттерн собран по 21st.dev Registry: Hero 195, Background Paths, Container Scroll Animation</p>
+        <div class="layout">
+          <div class="copy">
+            <h1 id="hero-title"><span class="gradient-text">Найм без хаоса:</span> вся ATS-воронка в одном экране</h1>
+            <p class="lead">
+              HireFlow объединяет заявки, отклики, интервью, коммуникации и аналитику. Рекрутеры двигают кандидатов быстрее, руководители видят SLA, а команда больше не теряет сильных людей в таблицах.
+            </p>
+            <div class="actions" aria-label="Основные действия">
+              <a class="button button--primary" href="mailto:demo@example.com">Запросить демо</a>
+              <a class="button button--ghost" href="#product-preview">Открыть воронку</a>
+            </div>
+            <div class="proof" aria-label="Показатели ATS">
+              <div class="proof-card">
+                <strong>-32%</strong>
+                <span>меньше ручных статусов и follow-up сообщений</span>
+              </div>
+              <div class="proof-card">
+                <strong>18 дн.</strong>
+                <span>средний time-to-hire под контролем SLA</span>
+              </div>
+              <div class="proof-card">
+                <strong>6 каналов</strong>
+                <span>hh.ru, Telegram, email, календарь, referral, карьерный сайт</span>
+              </div>
+            </div>
           </div>
-          <div class="hero__proof" aria-label="Ключевые показатели">
-            <div class="proof-card">
-              <strong>37%</strong>
-              <span>быстрее short-list по активным вакансиям</span>
+
+          <aside class="preview" id="product-preview" aria-label="Превью интерфейса ATS">
+            <div class="tabs" aria-label="Разделы ATS">
+              <span class="tab tab--active">Воронка</span>
+              <span class="tab">Автоматизации</span>
+              <span class="tab">SLA</span>
+              <span class="tab">Аналитика</span>
             </div>
-            <div class="proof-card">
-              <strong>1 база</strong>
-              <span>кандидаты, резюме, история и фидбек</span>
+            <div class="product-frame">
+              <div class="topbar">
+                <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                <div class="live">Live recruiting board</div>
+              </div>
+              <div class="board">
+                <div class="metric-grid">
+                  <div class="metric"><span>Активные вакансии</span><strong>42 <small>+8</small></strong></div>
+                  <div class="metric"><span>Новые кандидаты</span><strong>186</strong></div>
+                  <div class="metric"><span>Ответы вовремя</span><strong>94%</strong></div>
+                </div>
+
+                <div class="kanban" aria-label="Воронка кандидатов">
+                  <div class="stage">
+                    <p class="stage-title">Новые <i>48</i></p>
+                    <div class="candidate candidate--hot"><strong>Анна К.</strong><span>Product designer · hh.ru</span></div>
+                    <div class="candidate"><strong>Илья М.</strong><span>Backend engineer · referral</span></div>
+                  </div>
+                  <div class="stage">
+                    <p class="stage-title">Скрининг <i>23</i></p>
+                    <div class="candidate"><strong>Мария С.</strong><span>HRBP · Telegram</span></div>
+                    <div class="candidate"><strong>Вадим Р.</strong><span>QA lead · career site</span></div>
+                  </div>
+                  <div class="stage">
+                    <p class="stage-title">Интервью <i>12</i></p>
+                    <div class="candidate candidate--hot"><strong>Олег Р.</strong><span>Sales lead · календарь 16:00</span></div>
+                    <div class="candidate"><strong>Дина П.</strong><span>Analyst · feedback due</span></div>
+                  </div>
+                  <div class="stage">
+                    <p class="stage-title">Оффер <i>5</i></p>
+                    <div class="candidate"><strong>Никита В.</strong><span>DevOps · offer sent</span></div>
+                    <div class="candidate candidate--hot"><strong>Лена Т.</strong><span>PM · approve comp</span></div>
+                  </div>
+                </div>
+
+                <div class="bottom-row">
+                  <div class="insight">
+                    <strong>ATS подсветила узкое место</strong>
+                    <span>Вакансия Senior React проседает на техническом интервью: 6 кандидатов ждут фидбек больше 48 часов.</span>
+                  </div>
+                  <div class="integrations" aria-label="Интеграции ATS">
+                    <span class="chip">hh.ru</span>
+                    <span class="chip">Telegram</span>
+                    <span class="chip">Email</span>
+                    <span class="chip">Calendar</span>
+                    <span class="chip">BI</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="proof-card">
-              <strong>24/7</strong>
-              <span>автонапоминания, письма и SLA-контроль</span>
+            <div class="source-strip" aria-label="Источники дизайна">
+              <code>21st Registry</code>
+              <code>tabs + animated border</code>
+              <code>gradient paths</code>
             </div>
-          </div>
+          </aside>
         </div>
-
-        <aside class="product-card" aria-label="Превью ATS панели">
-          <div class="dashboard">
-            <div class="dashboard__topbar">
-              <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-              <span class="dashboard__tag">Live hiring board</span>
-            </div>
-            <div class="dashboard__body" id="pipeline">
-              <div class="metric-row">
-                <div class="metric"><span>Открыто вакансий</span><strong>42</strong></div>
-                <div class="metric"><span>Time-to-hire</span><strong>18 дн.</strong></div>
-                <div class="metric"><span>Конверсия</span><strong>21%</strong></div>
-              </div>
-
-              <div class="pipeline" aria-label="Воронка кандидатов">
-                <div class="stage">
-                  <p class="stage__title">Новые</p>
-                  <div class="candidate"><strong>Анна К.</strong><span>Product designer</span></div>
-                  <div class="candidate"><strong>Илья М.</strong><span>Backend engineer</span></div>
-                </div>
-                <div class="stage">
-                  <p class="stage__title">Скрининг</p>
-                  <div class="candidate"><strong>Мария С.</strong><span>HRBP</span></div>
-                </div>
-                <div class="stage">
-                  <p class="stage__title">Интервью</p>
-                  <div class="candidate"><strong>Олег Р.</strong><span>Sales lead</span></div>
-                  <div class="candidate"><strong>Дина П.</strong><span>Analyst</span></div>
-                </div>
-                <div class="stage">
-                  <p class="stage__title">Оффер</p>
-                  <div class="candidate"><strong>Никита В.</strong><span>DevOps</span></div>
-                </div>
-              </div>
-
-              <div class="integrations" aria-label="Интеграции">
-                <span class="chip">hh.ru</span>
-                <span class="chip">Telegram</span>
-                <span class="chip">Email</span>
-                <span class="chip">Календарь</span>
-                <span class="chip">BI-отчеты</span>
-              </div>
-            </div>
-          </div>
-          <div class="floating-note">
-            <strong>Следующее действие найдено</strong>
-            <span>ATS сама подсветила кандидатов без фидбека и интервью, которые пора назначить сегодня.</span>
-          </div>
-        </aside>
       </section>
     </main>
   </body>
